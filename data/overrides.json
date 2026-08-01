@@ -1,0 +1,27 @@
+{
+  "_comment": "עדכונים ידניים שאינם קיימים במסמך ה-Docs (או שנועדו לעקוף אותו). מתמזגים מעל התוכן שנשלף אוטומטית בכל הרצה של scripts/sync_content.py.",
+
+  "polls": {
+    "media": [
+      {
+        "type": "spotify",
+        "url": "https://open.spotify.com/episode/1b6EttpdGNJxyIGcQenTE8?si=b8a4135aad8d40b5",
+        "embed": "https://open.spotify.com/embed/episode/1b6EttpdGNJxyIGcQenTE8?utm_source=generator",
+        "label": "פודקאסט בנושא סקרי בחירות"
+      }
+    ]
+  },
+
+  "_article_meta_fallback": {
+    "_comment": "כותרת/תמונה גיבוי לכתובות שחוסמות שליפה אוטומטית (למשל כלכליסט, שיחה מקומית). מפתח משני = נושא, מפתח שלישי = ה-URL המדויק כפי שמופיע במסמך.",
+    "economy": {
+      "https://www.calcalist.co.il/local_news/article/rjv00laacwl": {
+        "title": "הפיתוי לסבסד את הדלק כשיחצה את ה-8 שקלים יעלה לנו מיליארדים"
+      },
+      "https://www.calcalist.co.il/local_news/article/hyd0mlyc9": {
+        "title": "ליברמן: \"אפעל להפחתת מס הבלו בשקל, גם בעת ממשלת המעבר\""
+      }
+    },
+    "polls": {}
+  }
+}
