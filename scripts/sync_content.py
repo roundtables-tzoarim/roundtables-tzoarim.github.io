@@ -243,19 +243,52 @@ def save_cropped_image(image_url, dest_path):
 
 
 def placeholder_image(dest_path, text):
+    """תמונה חלופית נאה (לא סתם תיבה עם טקסט) לכתבות שאין להן תמונה אמיתית
+    שניתן היה לשלוף אוטומטית. לא דורסת קובץ קיים - כדי לרענן, מוחקים אותו קודם."""
     if dest_path.exists():
         return
     dest_path.parent.mkdir(parents=True, exist_ok=True)
-    img = Image.new("RGB", (800, 450), "#0f2942")
+
+    navy = (15, 41, 66)
+    navy_dark = (10, 29, 47)
+    gold = (184, 146, 90)
+    gold_light = (212, 175, 122)
+
+    img = Image.new("RGB", (800, 450), navy)
     draw = ImageDraw.Draw(img)
-    draw.rectangle([0, 410, 800, 450], fill="#b8925a")
+
+    # גרדיאנט אלכסוני עדין
+    for y in range(450):
+        t = y / 450
+        r = int(navy[0] + (navy_dark[0] - navy[0]) * t)
+        g = int(navy[1] + (navy_dark[1] - navy[1]) * t)
+        b = int(navy[2] + (navy_dark[2] - navy[2]) * t)
+        draw.line([(0, y), (800, y)], fill=(r, g, b))
+
+    # עיגול זהב דקורטיבי בפינה
+    draw.ellipse([560, -120, 900, 220], outline=gold, width=3)
+    draw.ellipse([600, -60, 820, 160], outline=(*gold, ), width=1)
+
+    # אייקון "כתבה": ריבוע עם קפל פינה + שורות טקסט
+    ix, iy, isz = 90, 130, 190
+    draw.rounded_rectangle([ix, iy, ix + isz, iy + isz * 1.15], radius=10, outline=gold_light, width=4)
+    fold = 34
+    draw.polygon([(ix + isz - fold, iy), (ix + isz, iy + fold), (ix + isz - fold, iy + fold)], fill=navy, outline=gold_light)
+    line_y = iy + 46
+    for i in range(4):
+        w_line = isz - 40 if i < 3 else isz - 90
+        draw.line([(ix + 20, line_y), (ix + 20 + w_line, line_y)], fill=gold_light, width=4)
+        line_y += 28
+
+    draw.rectangle([0, 410, 800, 450], fill=gold)
     try:
-        font = ImageFont.truetype("arial.ttf", 30)
+        font = ImageFont.truetype("arial.ttf", 24)
     except Exception:
         font = ImageFont.load_default()
-    bbox = draw.textbbox((0, 0), text, font=font)
+    display_text = text[::-1]  # PIL לא יודע bidi - היפוך ידני כדי שעברית תוצג נכון
+    bbox = draw.textbbox((0, 0), display_text, font=font)
     w, h = bbox[2] - bbox[0], bbox[3] - bbox[1]
-    draw.text(((800 - w) / 2, (410 - h) / 2), text, fill="white", font=font)
+    draw.text(((800 - w) / 2, 410 + (40 - h) / 2), display_text, fill=navy_dark, font=font)
     img.save(dest_path, quality=85)
 
 

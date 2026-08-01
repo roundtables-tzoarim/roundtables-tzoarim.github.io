@@ -23,6 +23,17 @@ function mediaBlockHTML(item) {
         ${item.desc ? `<p class="media-hint">${item.desc}</p>` : ""}
       </div>`;
   }
+  if (item.type === "video") {
+    // וידאו מתארח מקומית (מוריד ב-yt-dlp) - לא דורש חשבון פייסבוק/יוטיוב לצפייה
+    return `
+      <div class="media-block">
+        ${item.label ? `<p class="media-label">${item.label}</p>` : ""}
+        <div class="media-wrapper video">
+          <video controls preload="metadata" playsinline src="${item.src}"></video>
+        </div>
+        ${item.desc ? `<p class="media-hint">${item.desc}</p>` : ""}
+      </div>`;
+  }
   // link-style card (פייסבוק, כאן, וכו')
   return `
     <div class="media-block">

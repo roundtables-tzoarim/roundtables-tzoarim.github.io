@@ -4,16 +4,15 @@
     "media": [
       {
         "type": "spotify",
-        "url": "https://open.spotify.com/episode/63Yn2oBLXMfQiYcaRatZvo?si=SpXpK7rlSrCpLwsVtADJJQ&utm_source=copy-link&nd=1&dlsi=2e91ae21c52d4f05",
+        "url": "https://open.spotify.com/episode/63Yn2oBLXMfQiYcaRatZvo",
         "embed": "https://open.spotify.com/embed/episode/63Yn2oBLXMfQiYcaRatZvo?utm_source=generator",
-        "label": "פודקאסט חיות כיס, להאזין בין דקה 12-14. נגד כלכלת בחירות"
+        "label": "🎙️ נגד כלכלת בחירות — פודקאסט \"חיות כיס\" (להאזין בין דקה 12–14)"
       },
       {
-        "type": "link",
-        "url": "https://www.facebook.com/100Tzad/videos/%D7%94%D7%A4%D7%97%D7%AA%D7%AA-%D7%9E%D7%A1-%D7%94%D7%91%D7%9C%D7%95-%D7%91%D7%AA%D7%A7%D7%95%D7%A4%D7%AA-%D7%91%D7%97%D7%99%D7%A8%D7%95%D7%AA-%D7%AA%D7%91%D7%99%D7%90%D7%95-%D7%9C%D7%A0%D7%95-%D7%A2%D7%95%D7%93/1161672011060253/",
-        "label": "פודקאסט חיות כיס, להאזין בין דקה 12-14. נגד כלכלת בחירות",
-        "tag": "פייסבוק",
-        "image": "assets/images/economy/media2.jpg"
+        "type": "video",
+        "src": "assets/video/economy-gai-lerer.mp4",
+        "label": "📺 בעד כלכלת בחירות — \"המצד השני\" עם גיא לרר",
+        "desc": "הסרטון הורד ומתארח כאן ישירות כך שאפשר לצפות בו בלי חשבון פייסבוק."
       }
     ],
     "articles": [
