@@ -28,3 +28,31 @@ function observeFadeTargets() {
 
 document.addEventListener("DOMContentLoaded", observeFadeTargets);
 document.addEventListener("content-rendered", observeFadeTargets);
+
+// כותרת עליונה מתכווצת בגלילה - נשארת דביקה עם ניווט בין 3 הדפים בלבד.
+function initStickyHeader() {
+  const header = document.querySelector(".site-header");
+  if (!header) return;
+  const THRESHOLD = 60;
+  let ticking = false;
+
+  function update() {
+    header.classList.toggle("is-compact", window.scrollY > THRESHOLD);
+    ticking = false;
+  }
+
+  window.addEventListener(
+    "scroll",
+    () => {
+      if (!ticking) {
+        requestAnimationFrame(update);
+        ticking = true;
+      }
+    },
+    { passive: true }
+  );
+
+  update();
+}
+
+document.addEventListener("DOMContentLoaded", initStickyHeader);

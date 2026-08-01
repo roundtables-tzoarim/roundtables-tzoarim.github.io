@@ -59,8 +59,38 @@ a {
   color: #fff;
   padding: 32px 0 40px;
   text-align: center;
-  position: relative;
+  position: sticky;
+  top: 0;
+  z-index: 40;
   overflow: hidden;
+  transition: padding 0.3s ease, box-shadow 0.3s ease;
+}
+
+.site-header.is-compact {
+  padding: 10px 0;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+}
+
+.site-header .logo,
+.site-header .eyebrow,
+.site-header h1,
+.site-header p.subtitle {
+  transition: max-height 0.3s ease, opacity 0.2s ease, margin 0.3s ease;
+  overflow: hidden;
+}
+
+.site-header .logo { max-height: 110px; }
+.site-header .eyebrow { max-height: 30px; }
+.site-header h1 { max-height: 80px; }
+.site-header p.subtitle { max-height: 70px; }
+
+.site-header.is-compact .logo,
+.site-header.is-compact .eyebrow,
+.site-header.is-compact h1,
+.site-header.is-compact p.subtitle {
+  max-height: 0;
+  opacity: 0;
+  margin: 0;
 }
 
 .site-header::after {
@@ -368,6 +398,11 @@ section {
   gap: 8px;
   padding: 14px 0 0;
   flex-wrap: wrap;
+  transition: padding 0.3s ease;
+}
+
+.site-header.is-compact .topic-nav {
+  padding-top: 0;
 }
 
 .topic-nav a {
