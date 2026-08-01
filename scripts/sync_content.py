@@ -186,18 +186,48 @@ def media_type_for(url):
     return "link"
 
 
-def spotify_embed(url):
+def spotify_uri(url):
+    """spotify:episode:ID וכו' - נדרש עבור ה-iFrame API (כדי לתמוך בהתחלה מדקה מסוימת)."""
     m = re.search(r"/(episode|track|show)/([A-Za-z0-9]+)", url)
     if not m:
         return None
-    return f"https://open.spotify.com/embed/{m.group(1)}/{m.group(2)}?utm_source=generator"
+    return f"spotify:{m.group(1)}:{m.group(2)}"
 
 
-def youtube_embed(url):
+def youtube_embed(url, start=None, end=None):
     m = re.search(r"youtu\.be/([A-Za-z0-9_-]+)", url) or re.search(r"[?&]v=([A-Za-z0-9_-]+)", url) or re.search(r"youtube\.com/embed/([A-Za-z0-9_-]+)", url)
     if not m:
         return None
-    return f"https://www.youtube.com/embed/{m.group(1)}"
+    params = []
+    if start:
+        params.append(f"start={start}")
+    if end:
+        params.append(f"end={end}")
+    qs = ("?" + "&".join(params)) if params else ""
+    return f"https://www.youtube.com/embed/{m.group(1)}{qs}"
+
+
+def parse_time_range(text):
+    """מזהה טווח דקות שהוגדר בטקסט החופשי במסמך (למשל 'בין דקה 12:00-14:00' או
+    'מההתחלה עד דקה 07:00') ומחזיר (start_seconds, end_seconds) - כל אחד יכול להיות None."""
+    if not text:
+        return None, None
+    m = re.search(r"(\d{1,2}):(\d{2})\s*[-–]\s*(\d{1,2}):(\d{2})", text)
+    if m:
+        start = int(m.group(1)) * 60 + int(m.group(2))
+        end = int(m.group(3)) * 60 + int(m.group(4))
+        return start, end
+    m = re.search(r"עד\s+דקה\s+(\d{1,2}):(\d{2})", text)
+    if m:
+        return 0, int(m.group(1)) * 60 + int(m.group(2))
+    m = re.search(r"דקה\s+(\d{1,3})\s*[-–]\s*(\d{1,3})", text)
+    if m:
+        return int(m.group(1)) * 60, int(m.group(2)) * 60
+    m = re.search(r"מדקה\s+(\d{1,2})(?::(\d{2}))?", text)
+    if m:
+        sec = int(m.group(2)) if m.group(2) else 0
+        return int(m.group(1)) * 60 + sec, None
+    return None, None
 
 
 def fetch_og(url):
@@ -301,11 +331,15 @@ def build_media_items(topic, media_text, fallback_meta):
         mtype = media_type_for(url)
         entry = {"type": mtype, "url": url}
 
+        time_start, time_end = parse_time_range(it["meta_raw"] + " " + (desc or ""))
+
         if mtype == "spotify":
-            entry["embed"] = spotify_embed(url)
+            entry["uri"] = spotify_uri(url)
+            if time_start:
+                entry["startAt"] = time_start
             entry["label"] = title or tag or "פודקאסט"
         elif mtype == "youtube":
-            entry["embed"] = youtube_embed(url)
+            entry["embed"] = youtube_embed(url, time_start, time_end)
             entry["label"] = title or tag or "סרטון"
         else:
             fb = fallback_meta.get(url, {})
