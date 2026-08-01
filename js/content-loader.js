@@ -54,12 +54,28 @@ function mediaBlockHTML(item, idx) {
       </div>`;
   }
   if (item.type === "video") {
-    // וידאו מתארח מקומית (מוריד ב-yt-dlp) - לא דורש חשבון פייסבוק/יוטיוב לצפייה
+    // וידאו מתארח מקומית - לא דורש חשבון פייסבוק/יוטיוב לצפייה
     return `
       <div class="media-block">
         ${item.label ? `<p class="media-label">${item.label}</p>` : ""}
         <div class="media-wrapper video">
           <video controls preload="metadata" playsinline src="${item.src}"></video>
+        </div>
+        ${item.desc ? `<p class="media-hint">${item.desc}</p>` : ""}
+      </div>`;
+  }
+  if (item.type === "facebook") {
+    // נגן הווידאו הרשמי של פייסבוק להטמעה - לא דורש חשבון כדי לצפות בסרטון ציבורי מדף
+    const embedSrc = `https://www.facebook.com/plugins/video.php?height=314&href=${encodeURIComponent(item.url)}&show_text=false&width=560`;
+    return `
+      <div class="media-block">
+        ${item.label ? `<p class="media-label">${item.label}</p>` : ""}
+        <div class="media-wrapper video">
+          <iframe src="${embedSrc}" title="${item.label || "וידאו"}"
+            style="border:none;overflow:hidden" scrolling="no" frameborder="0"
+            allowfullscreen="true"
+            allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"
+            loading="lazy"></iframe>
         </div>
         ${item.desc ? `<p class="media-hint">${item.desc}</p>` : ""}
       </div>`;
